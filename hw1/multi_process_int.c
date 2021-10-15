@@ -1,5 +1,5 @@
 /*
-complie: gcc multi_process_int.out multi_process_int.c
+complie: gcc -o multi_process_int.out multi_process_int.c
 run: $ ./multi_process_int.out [datasize] [process_num]
 
 NOTE: (datasize <= 100000000, process_num <= 20)
@@ -27,6 +27,12 @@ void fill_rand_num(int datasize){
 
 int main(int argc, char *argv[]){
 
+    FILE *F ;
+    F = fopen("multi_process_int.csv", "a");
+    if(F == NULL){
+        printf("open file fail.\n");
+    }
+
     unsigned long diff;
     unsigned long total_time = 0;
     int datasize = atoi(argv[1]); //input argument of datasize
@@ -43,7 +49,6 @@ int main(int argc, char *argv[]){
     fill_rand_num(datasize);
 
     for(int repeat_time = 0; repeat_time < 10; repeat_time++){
-        process_num = atoi(argv[2]);
         count = 0;
         pid_t pids[process_num];
         struct timeval start, end;
@@ -76,7 +81,7 @@ int main(int argc, char *argv[]){
         int seg_count;
         int status;
         pid_t pid;
-        while (process_num > 0) {
+        for(int i = 0; i < process_num; i++){
             if((pid = wait(&status)) == -1){
                 printf("wait() error.\n");
             }else{
@@ -92,7 +97,6 @@ int main(int argc, char *argv[]){
                     printf("reason unknown for child termination\n");
                 }
             }
-            process_num--;
         }
         gettimeofday(&end, NULL);
 
@@ -101,7 +105,12 @@ int main(int argc, char *argv[]){
         printf("Compute time: %luus.\n\n", diff);
         total_time += diff;
     }
-    printf("Average time cost: %.2fus\n", (total_time / 10.0));
+    int avg_time = total_time / 10;
+    printf("Average time cost: %d us\n", avg_time);
+    
+    //write csv file
+    fprintf(F, "%d, %d, %d \n", datasize, process_num, avg_time);
+    fclose(F);
 
     return 0;
 }

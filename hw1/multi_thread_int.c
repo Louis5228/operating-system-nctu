@@ -44,6 +44,12 @@ void fill_rand_num(int datasize){
 
 int main(int argc, char *argv[]){
     
+    FILE *F ;
+    F = fopen("multi_thread_int.csv", "a");
+    if(F == NULL){
+        printf("open file fail.\n");
+    }
+
     struct timeval start, end;
     unsigned long diff;
     unsigned long total_time = 0;
@@ -87,7 +93,12 @@ int main(int argc, char *argv[]){
         printf("Compute time: %luus.\n\n", diff);
         total_time += diff;
     }
-    printf("Average time cost: %.2fus\n", (total_time / 10.0));
+    int avg_time = total_time / 10; 
+    printf("Average time cost: %dus\n", avg_time);
     
+    //write csv file
+    fprintf(F, "%d, %d, %d \n", datasize, thread_num, avg_time);
+    fclose(F);
+
     return 0;
 }
