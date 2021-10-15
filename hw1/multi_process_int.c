@@ -1,4 +1,9 @@
-//complie: gcc multi_process.out multi_process.c
+/*
+complie: gcc multi_process_int.out multi_process_int.c
+run: $ ./multi_process_int.out [datasize] [process_num]
+
+NOTE: (datasize <= 100000000, process_num <= 20)
+*/
 
 #include <sys/types.h>
 #include <sys/wait.h>

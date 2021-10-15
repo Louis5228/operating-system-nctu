@@ -1,4 +1,9 @@
-//compile: gcc -o multi_thread.out multi_thread.c -lpthread
+/*
+compile: gcc -o multi_thread_int.out multi_thread_int.c -lpthread
+run: $ ./multi_thread_int.out [datasize] [thread_num]
+
+NOTE: (datasize <= 100000000, thread_num <= 20)
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
